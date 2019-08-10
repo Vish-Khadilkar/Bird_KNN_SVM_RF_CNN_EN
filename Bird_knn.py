@@ -102,6 +102,15 @@ grid_params = {
 model = GridSearchCV(KNeighborsClassifier(), grid_params, cv=5, n_jobs=-1)
 model.fit(x_train_scaled_PCA, y_train)
 
+#save best model
+knn_best = model.best_estimator_
+#check best n_neigbors value
+print('Best_params')
+print(model.best_params_)
+#check  best model
+print('model.best.estimator_')
+print(knn_best)
+
 print(f'KNN Model Score: {model.score(x_test_scaled_PCA, y_test)}')
 
 y_predict = model.predict(x_test_scaled_PCA)
@@ -149,6 +158,7 @@ print(f'Confusion Matrix: \n{confusion_matrix(preds, y_test)}')
 #plt.show()
 
 ##Naive Bayes##
+print('Results for Naive Bayes')
 model_nb = GaussianNB()
 model_nb.fit(x_train_scaled_PCA,y_train)
 results_nb = model_nb.predict(x_test_scaled_PCA)
@@ -157,6 +167,7 @@ results_nb = model_nb.predict(x_test_scaled_PCA)
 print(f'Confusion Matrix: \n{confusion_matrix(results_nb, y_test)}')
 
 ##Ensemble##
+print('Results for Ensemble')
 estimators = []
 estimators.append(('RandomForestClassifier', clf_rf))
 estimators.append(('knn', model))
@@ -169,6 +180,7 @@ print(results)
 #print(f'Confusion Matrix: \n{confusion_matrix(results, y_test)}')
 
 ##Adaboost##
+print('Results for Adaboost')
 seed = 7
 num_trees = 50
 kfold = model_selection.KFold(n_splits=20, random_state=seed)
