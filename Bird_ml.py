@@ -106,6 +106,15 @@ model.fit(x_train_scaled_PCA, y_train)
 print('Results for KNN')
 print(f'KNN Model Score: {model.score(x_test_scaled_PCA, y_test)}')
 
+#save best model
+knn_best = model.best_estimator_
+#check best n_neigbors value
+print('Best_params')
+print(model.best_params_)
+#check  best model
+print('model.best.estimator_')
+print(knn_best)
+
 y_predict = model.predict(x_test_scaled_PCA)
 print(f'Confusion Matrix: \n{confusion_matrix(y_predict, y_test)}')
 class_names = ['Baryphthengus ruficapillus', 'Hypocnemis cantator', 'Notiochelidon cyanoleuca']
