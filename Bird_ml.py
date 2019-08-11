@@ -57,7 +57,7 @@ X = X.flatten('F')
 #X.shape = (1472, -1) #for 2 species example
 #X.shape = (4928, -1) #for 10 species example?
 #X.shape = (1940, -1) #for 3 species example
-X.shape = (1454, -1) #for cut 3 species example
+X.shape = (3974, -1) #for cut 3 species example
 #X.shape = (2570, -1) #for 4 species example
 #X.shape = (-1, 32768) #for all? species example
 ##not used#######X = X.transpose(2, 0, 1).reshape(1472, -1)
@@ -94,6 +94,32 @@ x_test_scaled_PCA = pca.transform(x_test_scaled)
 
 ## Start Execution of Classification ##
 
+####################
+#SVM PARAMETER
+print('Running SVM..')
+tuned_parameters = [{'kernel': ['rbf'], 'gamma': [1e-2, 1e-3],
+                     'C': [0.001, 0.10]},
+                    {'kernel': ['sigmoid'], 'gamma': [1e-2, 1e-3],
+                     'C': [0.001, 0.10]},
+                    {'kernel': ['linear'], 'C': [0.001]}]
+clf = GridSearchCV(SVC(C=1), tuned_parameters, cv=2)
+clf.fit(x_train_scaled_PCA, y_train)
+y_predict2 = clf.predict(x_test_scaled_PCA)
+
+#save best model for SVM
+svm_best = clf.best_estimator_
+#check best n_neigbors value
+print('Best_params')
+print(clf.best_params_)
+#check  best model
+print('model.best.estimator_')
+print(svm_best)
+print('Results for SVM')
+print(f'Confusion Matrix: \n{confusion_matrix(y_predict2, y_test)}')
+print(f'SVM Model Score: {clf.score(x_test_scaled_PCA, y_test)}')
+####################
+
+
 ##KNN
 grid_params = {
     'n_neighbors': [3, 5, 7, 9, 11, 15],
@@ -117,10 +143,10 @@ print(knn_best)
 
 y_predict = model.predict(x_test_scaled_PCA)
 print(f'Confusion Matrix: \n{confusion_matrix(y_predict, y_test)}')
-class_names = ['Baryphthengus ruficapillus', 'Hypocnemis cantator', 'Notiochelidon cyanoleuca']
+#class_names = ['Baryphthengus ruficapillus', 'Hypocnemis cantator', 'Notiochelidon cyanoleuca']
 # Plot normalized confusion matrix
-ncm.plot_confusion_matrix(y_test, y_predict, classes=class_names, normalize=True,
-                      title='Normalized confusion matrix for KNN')
+#ncm.plot_confusion_matrix(y_test, y_predict, classes=class_names, normalize=True,
+#                      title='Normalized confusion matrix for KNN')
 
 ##SVM
 ###old copied code####
@@ -138,6 +164,8 @@ for kernel in ('linear', 'rbf', 'poly'):
     y_predict2 = clf.predict(x_test_scaled_PCA)
     print(f'Confusion Matrix: \n{confusion_matrix(y_predict2, y_test)}')
 #plt.show()
+
+####################
 
 ##Random Forest
 
@@ -193,6 +221,5 @@ print('Results for Adaboost')
 print(results_adaboost.mean())
 print(results_adaboost)
 #print(f'Confusion Matrix: \n{confusion_matrix(results_adaboost, y_test)}')
-
 
 
