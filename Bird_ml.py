@@ -50,14 +50,13 @@ for c in CLASSES:
     #print(Y.shape)
 #print(np.shape(np.array(samples)))
 #print(np.shape(np.array(Ya)))
-
 X = np.array(samples)
 #X = X.flatten('F')[:X.shape[0]]
 X = X.flatten('F')
 #X.shape = (1472, -1) #for 2 species example
 #X.shape = (4928, -1) #for 10 species example?
 #X.shape = (1940, -1) #for 3 species example
-X.shape = (3974, -1) #for cut 3 species example
+X.shape = (np.shape(np.array(Ya))[0], -1) #for cut 3 species example
 #X.shape = (2570, -1) #for 4 species example
 #X.shape = (-1, 32768) #for all? species example
 ##not used#######X = X.transpose(2, 0, 1).reshape(1472, -1)
