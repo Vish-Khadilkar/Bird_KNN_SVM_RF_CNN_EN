@@ -28,7 +28,9 @@ for c in CLASSES:
 
 X = np.array(samples)
 X = X.flatten('F')
-X.shape = (np.shape(np.array(Ya))[0], -1)
+#X.shape = (np.shape(np.array(Ya))[0], -1)
+X.shape = (32768, -1)
+X = np.transpose(X)
 Y = np.array(Ya)
 
 x_train, x_test, y_train, y_test = train_test_split(X, Y)
@@ -52,7 +54,7 @@ grid_params = {
     'metric': ['euclidean', 'manhattan']
 }
 
-model = GridSearchCV(KNeighborsClassifier(), grid_params, cv=5, n_jobs=-1)
+model = GridSearchCV(KNeighborsClassifier(), grid_params, cv=10, n_jobs=-1)
 model.fit(x_train_scaled_PCA, y_train)
 print('Results for KNN')
 print(f'KNN Model Score: {model.score(x_test_scaled_PCA, y_test)}')
